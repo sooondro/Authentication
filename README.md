@@ -20,3 +20,8 @@
   -in server folder npm install joi for validating
   -in server do npm install monk, then new folder called db in server, then new file connection.js
   -add db in auth index.js
+
+Creating frontend
+  -npx @vue/cli create client - creates a client folder and vuecli in it
+  -npm run serve starts a autorefreshing webpack server
+  -
