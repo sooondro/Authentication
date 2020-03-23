@@ -12,3 +12,8 @@
       "dev": "nodemon index.js"
     }
     -npm run dev - to start the script
+  -Create router
+    -in server folder create a new folder called auth
+    -in that folder create index.js
+    -require router adn export it
+  -require the router in the main index.js using relative path
