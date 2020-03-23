@@ -15,5 +15,8 @@
   -Create router
     -in server folder create a new folder called auth
     -in that folder create index.js
-    -require router adn export it
-  -require the router in the main index.js using relative path
+    -require router and export it
+    -require the router in the main index.js using relative path
+  -in server folder npm install joi for validating
+  -in server do npm install monk, then new folder called db in server, then new file connection.js
+  -add db in auth index.js

@@ -3,9 +3,13 @@ const volleyball = require('volleyball');
 
 const app = express();
 
-const auth = require('./auth/index.js');
+//Any time a req is made with /auth, it goes to router to see if any paths match
+//const auth = require('./auth/index.js');
+//const auth = require('./auth/index');
+const auth = require('./auth'); //Wil auto-find index if not specified
 
 app.use(volleyball);
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
