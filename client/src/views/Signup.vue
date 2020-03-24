@@ -1,10 +1,13 @@
 <template>
   <div>
     <h1>Sign up</h1>
+    <div v-if="signingUp">
+      <img src="../assets/pacman.svg" />
+    </div>
     <div class="alert alert-dismissible alert-danger" v-if="errorMessage">
       {{ errorMessage }}
     </div>
-    <form @submit.prevent="signup">
+    <form v-if="!signingUp" @submit.prevent="signup">
       <div class="form-group">
         <label for="username">Username</label>
         <input
@@ -55,6 +58,8 @@
 <script>
 import Joi from 'joi';
 
+const SIGNUP_URL = 'http://localhost:5000/auth/signup';
+
 const schema = Joi.object().keys({
   username: Joi.string().regex(/(^[a-zA-Z0-9_]+$)/).min(2).max(30)
     .required(),
@@ -64,6 +69,7 @@ const schema = Joi.object().keys({
 
 export default {
   data: () => ({
+    signingUp: false,
     errorMessage: '',
     user: {
       username: '',
@@ -83,7 +89,35 @@ export default {
     signup() {
       this.errorMessage = '';
       if (this.validUser()) {
-        console.log('Valid');
+        const body = {
+          username: this.user.username,
+          password: this.user.password,
+        };
+        this.signingUp = true;
+        fetch(SIGNUP_URL, {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'content-type': 'application/json',
+          },
+        }).then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+          return res.json().then((err) => {
+            throw new Error(err.message);
+          });
+        }).then(() => {
+          setTimeout(() => {
+            this.signingUp = false;
+            this.$router.push('/login');
+          }, 1000);
+        }).catch((err) => {
+          setTimeout(() => {
+            this.signingUp = false;
+            this.errorMessage = err.message;
+          }, 1000);
+        });
       }
     },
     validUser() {

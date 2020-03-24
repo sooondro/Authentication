@@ -25,3 +25,5 @@ Creating frontend
   -npx @vue/cli create client - creates a client folder and vuecli in it
   -npm run serve starts a autorefreshing webpack server
   -
+
+Loading icon from https://loading.io/

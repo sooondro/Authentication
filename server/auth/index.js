@@ -29,6 +29,7 @@ router.post('/signup', (req, res, next) => {
     }).then((user) => {
       if (user) {
         const error = new Error('Username already exists. Please choose another one.');
+        res.status(409);
         next(error);
       } else {
         bcrypt.hash(req.body.password.trim(), 12,(err, hash) => {
@@ -48,6 +49,7 @@ router.post('/signup', (req, res, next) => {
       }
     });
   } else {
+    res.status(422);
     next(result.error);
   }
 });
