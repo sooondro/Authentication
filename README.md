@@ -27,3 +27,5 @@ Creating frontend
   -
 
 Loading icon from https://loading.io/
+
+-in server do npm install jsonwebtoken and npm install joi
