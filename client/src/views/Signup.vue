@@ -1,10 +1,14 @@
 <template>
   <div>
     <h1>Sign up</h1>
-    <form>
+    <div class="alert alert-dismissible alert-danger" v-if="errorMessage">
+      {{ errorMessage }}
+    </div>
+    <form @submit.prevent="signup">
       <div class="form-group">
         <label for="username">Username</label>
         <input
+        v-model="user.username"
         type="text"
         class="form-control"
         id="username"
@@ -19,6 +23,7 @@
         <div class="form-group col-md-6">
           <label for="password">Password</label>
           <input
+          v-model="user.password"
           type="password"
           class="form-control"
           id="password"
@@ -31,6 +36,7 @@
         <div class="form-group col-md-6">
           <label for="confirmPassword">Confirm Password</label>
           <input
+          v-model="user.confirmPassword"
           type="password"
           class="form-control"
           id="confirmPassword"
@@ -47,9 +53,56 @@
 </template>
 
 <script>
+import Joi from 'joi';
+
+const schema = Joi.object().keys({
+  username: Joi.string().regex(/(^[a-zA-Z0-9_]+$)/).min(2).max(30)
+    .required(),
+  password: Joi.string().trim().min(8).required(),
+  confirmPassword: Joi.string().trim().min(8).required(),
+});
 
 export default {
-
+  data: () => ({
+    errorMessage: '',
+    user: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
+  }),
+  watch: {
+    user: {
+      handler() {
+        this.errorMessage = '';
+      },
+      deep: true,
+    },
+  },
+  methods: {
+    signup() {
+      this.errorMessage = '';
+      if (this.validUser()) {
+        console.log('Valid');
+      }
+    },
+    validUser() {
+      if (this.user.password !== this.user.confirmPassword) {
+        this.errorMessage = 'Passwords must match';
+        return false;
+      }
+      const result = Joi.validate(this.user, schema);
+      if (result.error === null) {
+        return true;
+      }
+      if (result.error.message.includes('username')) {
+        this.errorMessage = 'Invalid username';
+      } else {
+        this.errorMessage = 'Password invalid';
+      }
+      return false;
+    },
+  },
 };
 </script>
 
