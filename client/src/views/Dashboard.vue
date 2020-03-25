@@ -26,7 +26,7 @@
         <div class="card border-info mb-3">
           <div class="card-header">{{ note.title }}</div>
           <div class="card-body">
-            <p class="card-text">{{ note.note }}</p>
+            <p class="card-text" v-html="renderMarkdown(note.note)"></p>
           </div>
         </div>
       </div>
@@ -35,7 +35,14 @@
 </template>
 
 <script>
+import MarkdownIt from 'markdown-it';
+import MDemoji from 'markdown-it-emoji';
+
+const md = new MarkdownIt();
+md.use(MDemoji);
+
 const API_URL = 'http://localhost:5000/';
+
 export default {
   data: () => ({
     showForm: false,
@@ -62,6 +69,9 @@ export default {
       });
   },
   methods: {
+    renderMarkdown(note) {
+      return md.render(note);
+    },
     getNotes() {
       fetch(`${API_URL}api/v1/notes`, {
         headers: {
