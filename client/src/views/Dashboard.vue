@@ -21,6 +21,16 @@
       </div>
       <button type="submit" class="btn btn-success">Add Note</button>
     </form>
+    <section class="row mt-3">
+      <div class="col-4" v-for="note in notes" :key="note._id">
+        <div class="card border-info mb-3">
+          <div class="card-header">{{ note.title }}</div>
+          <div class="card-body">
+            <p class="card-text">{{ note.note }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -45,12 +55,23 @@ export default {
       .then((result) => {
         if (result.user) {
           this.user = result.user;
+          this.getNotes();
         } else {
           this.logout();
         }
       });
   },
   methods: {
+    getNotes() {
+      fetch(`${API_URL}api/v1/notes`, {
+        headers: {
+          authorization: `Bearer ${localStorage.token}`,
+        },
+      }).then((res) => res.json())
+        .then((notes) => {
+          this.notes = notes;
+        });
+    },
     logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');

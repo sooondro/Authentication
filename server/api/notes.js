@@ -14,7 +14,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   notes.find({
     user_id: req.user._id
-  })then((notes) => {
+  }).then((notes) => {
     res.json(notes);
   });
 });
