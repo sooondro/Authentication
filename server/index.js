@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const app = express();
 
+const middlewares = require('./auth/middlewares');
 //Any time a req is made with /auth, it goes to router to see if any paths match
 //const auth = require('./auth/index.js');
 //const auth = require('./auth/index');
@@ -14,10 +15,12 @@ app.use(cors({
   origin: 'http://localhost:8080'
 }));
 app.use(express.json());
+app.use(middlewares.checkTokenSetUser);
 
 app.get('/', (req, res) => {
   res.json({
     message: 'Hello World!',
+    user: req.user,
   });
 });
 
