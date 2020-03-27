@@ -29,3 +29,11 @@ Creating frontend
 Loading icon from https://loading.io/
 
 -in server do npm install jsonwebtoken and npm install joi
+
+
+practiceMake all path function inside controller
+
+Learned in video 6
+  -async await
+    -replacement for .then syntax on promises
+  -controller
